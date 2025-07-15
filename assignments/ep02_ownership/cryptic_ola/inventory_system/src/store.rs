@@ -1,11 +1,14 @@
-use super::product::Product;
+use super::product::{Product,ProductError};
 use super::orders::{Order, OrderStatus};
 pub struct Store {
-    products: Vec<Product>,
+    pub products: Vec<Product>,
     orders: Vec<Order>,
     next_order_id: u32,
 }
-
+pub enum StoreError {
+    ProductNotFound(u32),
+    OrderNotFound(u32),
+}
 impl Store {
     pub fn new() -> Self {
         Store {
@@ -68,4 +71,10 @@ impl Store {
             );
         }
     }
+      pub fn find_product<'a>(id: u32, products: &'a [Product]) -> Result<&'a Product, ProductError> {
+        products
+        .iter()
+        .find(|p| p.id == id)
+        .ok_or(ProductError::ProductNotFound(id))
+}
 }

@@ -1,8 +1,13 @@
+#[derive(Debug)]
 pub struct Product{
     pub id: u32,
     pub name: String,
     pub price: f64,
     pub stock: u32,
+}
+#[derive(Debug)]
+pub enum ProductError {
+    ProductNotFound(u32),
 }
 impl Product{
     pub fn is_in_stock(&self) -> bool {
@@ -24,4 +29,5 @@ impl Product{
             Err("Product is out of stock".to_string())
         }
     }
+
 }

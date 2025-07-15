@@ -4,6 +4,7 @@ mod orders;
 use orders::{Order, OrderStatus, PaymentStatus};
 use product::Product; 
 mod store;
+use crate::store::Store;
 
 fn main() {
   let mut apple = Product {
@@ -47,7 +48,8 @@ fn main() {
         println!("\n=== Product Management ===");
         println!("1. Add a new product");
         println!("2. List all products");
-        println!("3. Exit product management");
+        println!("3. Find product");
+         println!("4. Exit product management");
         
         let choice = read_input_u32("Enter your choice:");
 
@@ -64,8 +66,15 @@ fn main() {
                 println!("\nCurrent Products:");
                 store.list_products();
             }
-            3 => break,
-            _ => println!("Invalid choice, please try again"),
+            3 =>{
+                let stockId = read_input_u32("Enter product id:");
+                 match Store::find_product(stockId, &store.products) {
+                Ok(product) => println!("Found: {:?}", product),
+                 Err(e) => println!("Error: {:?}", e),
+            }
+            }
+            4 => break,
+            _ => println!("Product not available, please try again"),
         }
     }
     loop {
@@ -124,4 +133,6 @@ fn read_input_f64(prompt: &str) -> f64 {
             Err(_) => println!("Please enter a valid number"),
         }
     }
+
+   
 }
